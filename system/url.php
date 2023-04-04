@@ -8,9 +8,11 @@ $param=[];
 $dataurl=url();
 if (!empty($dataurl)) {
 	if (file_exists('app/controller/'.$dataurl[0].'.php')) {
-		require_once 'loader.php';
 		$def_controller=$dataurl[0];
 		unset($dataurl[0]);
+	}else{
+		require_once 'no_controller.php';
+		exit;
 	}
 }
 
@@ -19,6 +21,9 @@ if (isset($dataurl[1])) {
 	if(function_exists($dataurl[1])){
 		$def_method=$dataurl[1];
 		unset($dataurl[1]);
+	}else{
+		require_once 'no_method.php';
+		exit;
 	}
 }
 
@@ -27,6 +32,7 @@ if (!empty($dataurl)) {
 }
 
 call_user_func_array($def_method,$param);
+
 function url(){
 	if (isset($_GET['url'])) {
 		$url=$_GET['url'];
